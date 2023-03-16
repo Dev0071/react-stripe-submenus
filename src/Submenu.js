@@ -1,10 +1,28 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { useGlobalContext } from './context'
+import React, { useState, useRef, useEffect } from 'react';
+import { useGlobalContext } from './context';
 
 const Submenu = () => {
-const { isSubmenuOpen} = useGlobalContext()
+  const container = useRef(null);
+  const {
+    isSubmenuOpen,
+    location,
+    page: { page, links },
+  } = useGlobalContext();
+  useEffect(() => {
+    const submenu = container.current;
+    const { center, bottom } = location;
+    submenu.style.left = `${center}px`;
+    submenu.style.top = `${bottom}px`;
+  }, [location]);
 
-  return <aside className={`${isSubmenuOpen ? 'show submenu' : 'submenu'}`}>submenu component</aside>
-}
+  return (
+    <aside
+      className={`${isSubmenuOpen ? 'show submenu' : 'submenu'}`}
+      ref={container}
+    >
+      <h4>{page}</h4>
+    </aside>
+  );
+};
 
-export default Submenu
+export default Submenu;
